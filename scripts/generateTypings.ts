@@ -90,11 +90,13 @@ class GenerateTypings {
     const typeArrayOfT = factory.createArrayTypeNode(typeT);
     const tParam = factory.createTypeParameterDeclaration(t, undefined, typeDefault);
 
+    const typeNumber = factory.createTypeReferenceNode("number", undefined);
     const typeString = factory.createTypeReferenceNode("string", undefined);
-    const typeArrayOfString = factory.createArrayTypeNode(typeString);
+    const typeNumberOrString = factory.createUnionTypeNode([typeNumber, typeString]);
+    const typeArrayOfNumberOrString = factory.createArrayTypeNode(typeNumberOrString);
 
-    const name = factory.createParameterDeclaration(undefined, undefined, undefined, "name", undefined, typeString, undefined);
-    const names = factory.createParameterDeclaration(undefined, undefined, undefined, "names", undefined, typeArrayOfString, undefined);
+    const name = factory.createParameterDeclaration(undefined, undefined, undefined, "idOrName", undefined, typeNumberOrString, undefined);
+    const names = factory.createParameterDeclaration(undefined, undefined, undefined, "idsOrNames", undefined, typeArrayOfNumberOrString, undefined);
 
     return [
       factory.createMethodDeclaration(undefined, [MODIFIERS.Static], undefined, "get", undefined, [tParam], [name], typeT, undefined),
